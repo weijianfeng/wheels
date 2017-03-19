@@ -15,7 +15,7 @@ import javax.tools.Diagnostic;
 public class Logger {
 
     // Log
-    static final String PREFIX_OF_LOGGER =  ":Compiler ";
+    static final String PREFIX_OF_LOGGER =  "Route:Compiler ";
 
 
     private Messager msg;

@@ -16,7 +16,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -48,17 +47,20 @@ public class RouteProcessor extends AbstractProcessor {
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
         mFiler = processingEnv.getFiler();
-        mLogger = new Logger(processingEnv.getMessager());
         mTypes = processingEnv.getTypeUtils();            // Get type utils.
         mElements = processingEnv.getElementUtils();      // Get class meta.
+        mLogger = new Logger(processingEnv.getMessager());
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
+        mLogger.info(">>> process init <<<");
+
         if (CollectionUtils.isNotEmpty(annotations)) {
             Set<? extends Element> routeElements = roundEnv.getElementsAnnotatedWith(Route.class);
             try {
+                mLogger.info(">>> Found routes, start... <<<" + routeElements.size() + "  " + routeElements.toString());
                 this.parseRoutes(routeElements);
             } catch (Exception e) {
                 mLogger.error(e.toString());
@@ -69,7 +71,11 @@ public class RouteProcessor extends AbstractProcessor {
     }
 
     private void parseRoutes(Set<? extends Element> routeElements) throws IOException{
-        if (CollectionUtils.isNotEmpty(routeElements)) {
+
+        mLogger.info(">>> parseRoutes init <<<");
+
+        if (CollectionUtils.isEmpty(routeElements)) {
+            mLogger.info(">>> isEmpty<<<");
             return;
         }
 
@@ -89,6 +95,8 @@ public class RouteProcessor extends AbstractProcessor {
                         WildcardTypeName.subtypeOf(ClassName.get(mElements.getTypeElement("android.app.Activity"))))
         );
 
+        mLogger.info(">>> inputMapTypeOfRoute is"  + inputMapTypeOfRoute.toString() + "<<<");
+
         ParameterSpec routeParamSpec = ParameterSpec.builder(inputMapTypeOfRoute, "routes").build();
 
          /*
@@ -102,6 +110,7 @@ public class RouteProcessor extends AbstractProcessor {
         for (Element element : routeElements) {
             TypeMirror tm = element.asType();
             Route route = element.getAnnotation(Route.class);
+
             if (mTypes.isSubtype(tm, type_Activity)) {
                 loadIntoMethodOfRouteBuilder
                         .addStatement("routes.put($S,$T.class)",
@@ -117,5 +126,7 @@ public class RouteProcessor extends AbstractProcessor {
                         .addMethod(loadIntoMethodOfRouteBuilder.build())
                         .build()
         ).build().writeTo(mFiler);
+
+        mLogger.info(">>> Generated RouterMap <<<");
     }
 }
