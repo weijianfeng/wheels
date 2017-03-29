@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/app_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_margin="5dp"
+    android:background="@drawable/border_appitem_not_select">
 
     <ImageView
-        android:id="@+id/iv_item"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@mipmap/ic_launcher"/>
+        android:id="@+id/imv_delete_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:visibility="invisible"
+        android:background="@mipmap/delete_icon"/>
+
+    <ImageView
+        android:id="@+id/imv_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/tv_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxLength="15"/>
+
+
 
 </LinearLayout>
