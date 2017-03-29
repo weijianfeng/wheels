@@ -25,6 +25,7 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         implements ItemTouchHelperAdapter {
 
     private List<AppInfo> appList = new ArrayList<>();
+    private List<AppInfo> originAppList = new ArrayList<>();
 
     private OnAppInfoChangeListener mOnAppInfoChangeListener;
 
@@ -33,10 +34,18 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public AppGridAdapter(OnAppInfoChangeListener onAppInfoChangeListener, List<AppInfo> appList) {
         mOnAppInfoChangeListener = onAppInfoChangeListener;
         this.appList = appList;
+
+        originAppList.addAll(appList);
     }
 
     public void addAppInfo(AppInfo appInfo) {
         appList.add(appInfo);
+        notifyDataSetChanged();
+    }
+
+    public void resetList() {
+        appList.clear();
+        appList.addAll(originAppList);
         notifyDataSetChanged();
     }
 

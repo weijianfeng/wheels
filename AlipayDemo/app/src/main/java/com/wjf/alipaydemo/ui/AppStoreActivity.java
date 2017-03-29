@@ -24,8 +24,7 @@ import java.util.List;
  * Created by weijianfeng on 2017/3/27.
  */
 
-public class AppStoreActivity extends Activity
-        implements OnAppInfoChangeListener{
+public class AppStoreActivity extends Activity implements OnAppInfoChangeListener{
 
     private Button mButton;
     private boolean isEditStatus = false;
@@ -113,6 +112,18 @@ public class AppStoreActivity extends Activity
         mThirdPartyEditAppGridAdapter = new EditAppGridAdapter(this,this,appList3);
         mThirdPartyAppRecyclerView.setAdapter(mThirdPartyEditAppGridAdapter);
         mThirdPartyAppRecyclerView.setLayoutManager(gridLayoutManager3);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isEditStatus) {
+            mButton.setText("编辑");
+            setEditStatus(false);
+            isEditStatus = false;
+            mAppGridAdapter.resetList();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
