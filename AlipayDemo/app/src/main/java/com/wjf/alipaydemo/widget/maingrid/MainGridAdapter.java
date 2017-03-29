@@ -31,6 +31,11 @@ public class MainGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.appList = appList;
     }
 
+    public void refreshData(List<AppInfo> appList) {
+        this.appList = appList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(LayoutInflater

@@ -40,6 +40,10 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyDataSetChanged();
     }
 
+    public List<AppInfo> getAppList() {
+        return appList;
+    }
+
     public void setEditStatus(boolean status) {
         isEditStatus = status;
         notifyDataSetChanged();
@@ -61,6 +65,7 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((ItemViewHolder)holder).linearLayout.setBackgroundResource(R.drawable.border_appitem_select);
         } else {
             ((ItemViewHolder)holder).bagdeView.setVisibility(View.INVISIBLE);
+            ((ItemViewHolder)holder).linearLayout.setBackgroundResource(R.drawable.border_appitem_not_select);
         }
 
         ((ItemViewHolder)holder).bagdeView.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +93,7 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             public boolean onLongClick(View v) {
                 if (!isEditStatus) {
                     notifyDataSetChanged();
-                    mOnAppInfoChangeListener.isEditStatus(true);
+                    mOnAppInfoChangeListener.setEditStatus(true);
                     return false;
                 }
                 mOnAppInfoChangeListener.onStartDrag(holder);

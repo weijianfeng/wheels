@@ -31,7 +31,7 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<AppInfo> appList = new ArrayList<>();
     private OnAppInfoChangeListener mOnAppInfoChangeListener;
 
-    private boolean isStatusStatus = false;
+    private boolean isEditStatus = false;
     private SharePreferenceUtil sharePreferenceUtil;
 
     public EditAppGridAdapter(Context context, OnAppInfoChangeListener mOnAppInfoChangeListener, List<AppInfo> appList) {
@@ -43,7 +43,7 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setEditStatus(boolean status) {
-        isStatusStatus = status;
+        isEditStatus = status;
         notifyDataSetChanged();
     }
 
@@ -69,9 +69,10 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ItemViewHolder)holder).textView.setText(appList.get(position).appName);
         ((ItemViewHolder)holder).imageView.setBackgroundResource(appList.get(position).appIcon);
 
-        if (isStatusStatus) {
+        if (isEditStatus) {
             ((ItemViewHolder)holder).badgeView.setVisibility(View.VISIBLE);
-            if ((appList.get(position)).status == Constants.AppStatus.APP_ADDED) {
+            if ((appList.get(position)).status == Constants.AppStatus.APP_ADDED
+               || isAppExisted(appList.get(position))) {
                 ((ItemViewHolder)holder).badgeView.setBackgroundResource(R.mipmap.isadd_icon);
             } else {
                 ((ItemViewHolder)holder).badgeView.setBackgroundResource(R.mipmap.add_icon);
@@ -79,6 +80,7 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((ItemViewHolder)holder).linearLayout.setBackgroundResource(R.drawable.border_appitem_select);
         } else {
             ((ItemViewHolder)holder).badgeView.setVisibility(View.INVISIBLE);
+            ((ItemViewHolder)holder).linearLayout.setBackgroundResource(R.drawable.border_appitem_not_select);
         }
 
         ((ItemViewHolder)holder).badgeView.setOnClickListener(new View.OnClickListener() {
@@ -107,11 +109,11 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ItemViewHolder)holder).linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (!isStatusStatus) {
+                if (!isEditStatus) {
                     notifyDataSetChanged();
                 }
-                isStatusStatus = true;
-                mOnAppInfoChangeListener.isEditStatus(true);
+                isEditStatus = true;
+                mOnAppInfoChangeListener.setEditStatus(true);
                 notifyDataSetChanged();
                 return false;
             }

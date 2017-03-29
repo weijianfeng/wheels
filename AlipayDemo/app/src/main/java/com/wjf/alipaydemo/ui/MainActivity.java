@@ -45,9 +45,22 @@ public class MainActivity extends AppCompatActivity {
         appList.add(new AppInfo("All", R.mipmap.all_apps, Constants.AppStatus.APP_ADDED));
 
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_app);
+        mRecyclerView = (RecyclerView) findViewById(R.id.main_app);
         mMainGridAdapter = new MainGridAdapter(this, appList);
-        recyclerView.setAdapter(mMainGridAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        mRecyclerView.setAdapter(mMainGridAdapter);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<AppInfo> appList = sharePreferenceUtil.getAppList();
+
+        if (appList.size() > 7) {
+            appList = appList.subList(0, 7);
+        }
+
+        appList.add(new AppInfo("All", R.mipmap.all_apps, Constants.AppStatus.APP_ADDED));
+        mMainGridAdapter.refreshData(appList);
     }
 }

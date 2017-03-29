@@ -13,5 +13,5 @@ public interface OnAppInfoChangeListener extends OnStartDragListener{
 
     void delete(AppInfo appInfo);
 
-    void isEditStatus(boolean status);
+    void setEditStatus(boolean status);
 }

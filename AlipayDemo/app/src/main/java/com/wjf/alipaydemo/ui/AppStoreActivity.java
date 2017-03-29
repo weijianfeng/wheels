@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
+import android.widget.Button;
 
 import com.wjf.alipaydemo.Constants;
 import com.wjf.alipaydemo.R;
+import com.wjf.alipaydemo.util.SharePreferenceUtil;
 import com.wjf.alipaydemo.widget.appgrid.AppGridAdapter;
 import com.wjf.alipaydemo.widget.appgrid.EditAppGridAdapter;
 import com.wjf.alipaydemo.widget.appgrid.listener.OnAppInfoChangeListener;
@@ -24,6 +27,9 @@ import java.util.List;
 public class AppStoreActivity extends Activity
         implements OnAppInfoChangeListener{
 
+    private Button mButton;
+    private boolean isEditStatus = false;
+
     private RecyclerView mAppRecyclerView;
     private RecyclerView mRecommandAppRecyclerView;
     private RecyclerView mThirdPartyAppRecyclerView;
@@ -34,20 +40,44 @@ public class AppStoreActivity extends Activity
 
     private ItemTouchHelper mItemTouchHelper;
 
+    private SharePreferenceUtil sharePreferenceUtil;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appstore);
 
+        sharePreferenceUtil = new SharePreferenceUtil(this, "appInfo");
+
+        mButton = (Button) findViewById(R.id.bt_operate);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEditStatus) {
+                    sharePreferenceUtil.clearAppList();
+                    sharePreferenceUtil.setAppList(mAppGridAdapter.getAppList());
+                    mButton.setText("编辑");
+                    setEditStatus(false);
+                    isEditStatus = false;
+                } else {
+                    mButton.setText("完成");
+                    setEditStatus(true);
+                    isEditStatus = true;
+                }
+            }
+        });
+
         mAppRecyclerView = (RecyclerView)findViewById(R.id.my_app);
         mRecommandAppRecyclerView = (RecyclerView)findViewById(R.id.recommend_app);
         mThirdPartyAppRecyclerView = (RecyclerView)findViewById(R.id.thirdparty_app);
 
-        List<AppInfo> appList1 = new ArrayList<>();
-        appList1.add(new AppInfo("Luckey Money",R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
-        appList1.add(new AppInfo("Transfer", R.mipmap.transfer, Constants.AppStatus.APP_ADDED));
-        appList1.add(new AppInfo("Card Repay",R.mipmap.card_repay, Constants.AppStatus.APP_ADDED));
-        appList1.add(new AppInfo("Zhima Credit", R.mipmap.zhima_credit, Constants.AppStatus.APP_ADDED));
+//        List<AppInfo> appList1 = new ArrayList<>();
+//        appList1.add(new AppInfo("Luckey Money",R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
+//        appList1.add(new AppInfo("Transfer", R.mipmap.transfer, Constants.AppStatus.APP_ADDED));
+//        appList1.add(new AppInfo("Card Repay",R.mipmap.card_repay, Constants.AppStatus.APP_ADDED));
+//        appList1.add(new AppInfo("Zhima Credit", R.mipmap.zhima_credit, Constants.AppStatus.APP_ADDED));
+
+        List<AppInfo> appList1 = sharePreferenceUtil.getAppList();
 
         List<AppInfo> appList2 = new ArrayList<>();
         appList2.add(new AppInfo("Luckey Money",R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
@@ -102,9 +132,9 @@ public class AppStoreActivity extends Activity
     }
 
     @Override
-    public void isEditStatus(boolean status) {
-        mAppGridAdapter.setEditStatus(true);
-        mRecommandEditAppGridAdapter.setEditStatus(true);
-        mThirdPartyEditAppGridAdapter.setEditStatus(true);
+    public void setEditStatus(boolean status) {
+        mAppGridAdapter.setEditStatus(status);
+        mRecommandEditAppGridAdapter.setEditStatus(status);
+        mThirdPartyEditAppGridAdapter.setEditStatus(status);
     }
 }
