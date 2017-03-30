@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.wjf.alipaydemo.Constants;
 import com.wjf.alipaydemo.R;
 import com.wjf.alipaydemo.util.SharePreferenceUtil;
+import com.wjf.alipaydemo.widget.MyRecyclerView;
 import com.wjf.alipaydemo.widget.appgrid.AppGridAdapter;
 import com.wjf.alipaydemo.widget.appgrid.EditAppGridAdapter;
 import com.wjf.alipaydemo.widget.appgrid.listener.OnAppInfoChangeListener;
@@ -29,7 +30,12 @@ public class AppStoreActivity extends Activity implements OnAppInfoChangeListene
     private Button mButton;
     private boolean isEditStatus = false;
 
-    private RecyclerView mAppRecyclerView;
+
+
+    private MyRecyclerView mAppRecyclerView;
+    private View mEmptyView;
+
+
     private RecyclerView mRecommandAppRecyclerView;
     private RecyclerView mThirdPartyAppRecyclerView;
 
@@ -55,20 +61,18 @@ public class AppStoreActivity extends Activity implements OnAppInfoChangeListene
                 if (isEditStatus) {
                     sharePreferenceUtil.clearAppList();
                     sharePreferenceUtil.setAppList(mAppGridAdapter.getAppList());
-                    mButton.setText("编辑");
                     setEditStatus(false);
-                    isEditStatus = false;
                 } else {
-                    mButton.setText("完成");
                     setEditStatus(true);
-                    isEditStatus = true;
                 }
             }
         });
 
-        mAppRecyclerView = (RecyclerView)findViewById(R.id.my_app);
+        mAppRecyclerView = (MyRecyclerView)findViewById(R.id.my_app);
         mRecommandAppRecyclerView = (RecyclerView)findViewById(R.id.recommend_app);
         mThirdPartyAppRecyclerView = (RecyclerView)findViewById(R.id.thirdparty_app);
+
+        mEmptyView = findViewById(R.id.empty_view);
 
 //        List<AppInfo> appList1 = new ArrayList<>();
 //        appList1.add(new AppInfo("Luckey Money",R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
@@ -97,6 +101,7 @@ public class AppStoreActivity extends Activity implements OnAppInfoChangeListene
         final GridLayoutManager gridLayoutManager3 = new GridLayoutManager(this, 4);
 
         mAppGridAdapter = new AppGridAdapter(this, appList1);
+        mAppRecyclerView.setEmptyView(mEmptyView);
         mAppRecyclerView.setAdapter(mAppGridAdapter);
         mAppRecyclerView.setLayoutManager(gridLayoutManager1);
 
@@ -119,7 +124,6 @@ public class AppStoreActivity extends Activity implements OnAppInfoChangeListene
         if (isEditStatus) {
             mButton.setText("编辑");
             setEditStatus(false);
-            isEditStatus = false;
             mAppGridAdapter.resetList();
         } else {
             super.onBackPressed();
@@ -144,8 +148,15 @@ public class AppStoreActivity extends Activity implements OnAppInfoChangeListene
 
     @Override
     public void setEditStatus(boolean status) {
+        isEditStatus = status;
         mAppGridAdapter.setEditStatus(status);
         mRecommandEditAppGridAdapter.setEditStatus(status);
         mThirdPartyEditAppGridAdapter.setEditStatus(status);
+
+        if (status) {
+            mButton.setText("完成");
+        } else {
+            mButton.setText("编辑");
+        }
     }
 }

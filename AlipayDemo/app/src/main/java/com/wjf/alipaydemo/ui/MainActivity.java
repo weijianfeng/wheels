@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         List<AppInfo> appList = sharePreferenceUtil.getAppList();
 
+        if (appList == null) {
+            appList = new ArrayList<>();
+        }
+
         if (appList.size() > 7) {
             appList = appList.subList(0, 7);
         }

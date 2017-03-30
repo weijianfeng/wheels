@@ -44,6 +44,15 @@ public class AppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void resetList() {
+        // 把之前添加的列表，先重置掉。
+        for (AppInfo appInfo : appList) {
+            if (originAppList.contains(appInfo)) {
+                continue;
+            } else {
+                mOnAppInfoChangeListener.delete(appInfo);
+            }
+        }
+
         appList.clear();
         appList.addAll(originAppList);
         notifyDataSetChanged();
