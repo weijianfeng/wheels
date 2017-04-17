@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imv_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:scaleType="center"
+        android:src="@mipmap/icon_scan"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/imv_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:scaleType="center"
+        android:layout_toRightOf="@+id/imv_scan"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/icon_pay"/>
+
+    <ImageView
+        android:id="@+id/imv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:scaleType="center"
+        android:layout_toRightOf="@+id/imv_pay"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/icon_search"/>
+
+    <ImageView
+        android:id="@+id/imv_add"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:scaleType="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/icon_add"/>
+
+</RelativeLayout>

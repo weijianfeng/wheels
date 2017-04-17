@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|top"
         android:visibility="invisible"
-        android:background="@mipmap/delete_icon"/>
+        android:background="@mipmap/app_delete_icon"/>
 
     <ImageView
         android:id="@+id/imv_item"
@@ -33,7 +33,5 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:maxLength="15"/>
-
-
 
 </LinearLayout>

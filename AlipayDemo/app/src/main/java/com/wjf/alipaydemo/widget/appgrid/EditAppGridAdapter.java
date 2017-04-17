@@ -54,7 +54,6 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             }
         }
-
         notifyDataSetChanged();
     }
 
@@ -75,7 +74,7 @@ public class EditAppGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                || isAppExisted(appList.get(position))) {
                 ((ItemViewHolder)holder).badgeView.setBackgroundResource(R.mipmap.isadd_icon);
             } else {
-                ((ItemViewHolder)holder).badgeView.setBackgroundResource(R.mipmap.add_icon);
+                ((ItemViewHolder)holder).badgeView.setBackgroundResource(R.mipmap.app_add_icon);
             }
             ((ItemViewHolder)holder).linearLayout.setBackgroundResource(R.drawable.border_appitem_select);
         } else {

@@ -1,14 +1,21 @@
 package com.wjf.alipaydemo.ui;
 
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.wjf.alipaydemo.Constants;
 import com.wjf.alipaydemo.R;
 import com.wjf.alipaydemo.entity.AppInfo;
 import com.wjf.alipaydemo.util.SharePreferenceUtil;
+import com.wjf.alipaydemo.widget.WrapHeightGridLayoutManager;
 import com.wjf.alipaydemo.widget.maingrid.MainGridAdapter;
 
 import java.util.ArrayList;
@@ -16,14 +23,37 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private AppBarLayout mAppBarLayout;
+    private Toolbar mToolbar;
+    private RelativeLayout mToolBarLayout;
+    private NestedScrollView mNestedScrollView;
+
     private RecyclerView mRecyclerView;
     private MainGridAdapter mMainGridAdapter;
+
     private SharePreferenceUtil sharePreferenceUtil;
+    private CollapsingToolbarLayoutState state;
+
+    private enum CollapsingToolbarLayoutState {
+        EXPANDED,
+        COLLAPSED,
+        INTERNEDIATE
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mToolBarLayout = (RelativeLayout) findViewById(R.id.rl_toorbar_content);
+        mNestedScrollView = (NestedScrollView) findViewById(R.id.scroll_content);
 
         sharePreferenceUtil = new SharePreferenceUtil(this.getApplicationContext(), "appInfo");
 
@@ -31,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         if (appList == null) {
             // 模拟获取数据
             appList = new ArrayList<>();
-            appList.add(new AppInfo("Luckey Money",R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
+            appList.add(new AppInfo("Luckey Money", R.mipmap.lucky_money, Constants.AppStatus.APP_ADDED));
             appList.add(new AppInfo("Transfer", R.mipmap.transfer, Constants.AppStatus.APP_ADDED));
-            appList.add(new AppInfo("Card Repay",R.mipmap.card_repay, Constants.AppStatus.APP_ADDED));
-            appList.add(new AppInfo("Zhima Credit", R.mipmap.zhima_credit, Constants.AppStatus.APP_ADDED));
+//            appList.add(new AppInfo("Card Repay", R.mipmap.card_repay, Constants.AppStatus.APP_ADDED));
+//            appList.add(new AppInfo("Zhima Credit", R.mipmap.zhima_credit, Constants.AppStatus.APP_ADDED));
             sharePreferenceUtil.setAppList(appList);
         }
 
@@ -48,7 +78,36 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.main_app);
         mMainGridAdapter = new MainGridAdapter(this, appList);
         mRecyclerView.setAdapter(mMainGridAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 4);
+        mGridLayoutManager.setSmoothScrollbarEnabled(true);
+        mGridLayoutManager.setAutoMeasureEnabled(true);
+
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    if (state != CollapsingToolbarLayoutState.EXPANDED) {
+                        state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
+                    }
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    if (state != CollapsingToolbarLayoutState.COLLAPSED) {
+                        mToolBarLayout.setVisibility(View.VISIBLE);//隐藏播放按钮
+                        state = CollapsingToolbarLayoutState.COLLAPSED;//修改状态标记为折叠
+                    }
+                } else {
+                    if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
+                        if(state == CollapsingToolbarLayoutState.COLLAPSED){
+                            mToolBarLayout.setVisibility(View.GONE);//由折叠变为中间状态时隐藏播放按钮
+                        }
+                        state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间
+                    }
+                }
+            }
+        });
     }
 
     @Override
