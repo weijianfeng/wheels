@@ -7,3 +7,4 @@
 * SoftReference WeakReference 软引用和弱引用相关的例子。
 * TestPlugin 插件化尝试的例子，使用了360的 droidplugin。
 * WRouter 参考各种Router，实践的简单路由方案，熟悉思想和注解处理器。
+* MultiFragment 验证嵌套Fragment，startActivityForResult后，在当前fragment中接受到值的问题。
