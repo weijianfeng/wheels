@@ -5,8 +5,8 @@
 * 网络请求
 * 图片加载
 * [框架](#框架)
-* 新版本特性
-* 性能优化
+* [新版本特性](#新特性)
+* [性能优化](#性能)
 * [工具相关](#工具)
 * [Git](#Git)
 * [套路方案类](#套路)
@@ -17,11 +17,17 @@
 * [Android异常之Service启动Activity](http://blog.csdn.net/android_freshman/article/details/53394744)
 * [Android为什么要设计出Bundle传递数据](http://blog.csdn.net/H291850336/article/details/50515705)
 
+## Fragment
+* [Fragment 使用中的坑](http://www.jianshu.com/p/d9143a92ad94)
+
+
 # <a name="UI"></a>UI
 * [一个View的系列专题, 略复杂](http://blog.csdn.net/column/details/viewframework.html)
 * [View事件分发（viewgroup）](http://blog.csdn.net/a553181867/article/details/51287844)
 * [View事件分发（view）](http://blog.csdn.net/a553181867/article/details/51296308)
 * [ListView RecyclerView 相关](https://github.com/D-clock/AndroidSystemUiTraining/blob/master/note/03_AndroidSystemUI%EF%BC%9ARecyclerView%E5%92%8CListView%E4%BD%BF%E7%94%A8%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90.md)
+* Tips：
+  * [ImageView src & background](http://blog.csdn.net/hoyouly/article/details/52839015)
 
 # <a name="框架"></a>框架
 ## 模块化方案
@@ -40,10 +46,14 @@
 * [RxJava 背压](http://www.jianshu.com/p/2c4799fa91a4)
 * [RxJava 2.0](http://www.jianshu.com/p/220955eefc1f)
 
+# <a name="新特性"></a>新版本特性
+* [Dalvik和ART 简要对比](http://www.jianshu.com/p/58f817d176b7)
+
 # <a name="性能"></a>性能优化
 * [Android性能优化典范 - 第1季](http://hukai.me/android-performance-patterns/)
 * [App测试平台 MQC](http://mqc.yunos.com/)
 * [Android 深度性能测试](https://yq.aliyun.com/articles/72022?spm=5176.100238.goodcont.86.nO8rbT)
+* [Android性能与优化](https://yq.aliyun.com/articles/73518)
 
 # <a name="工具"></a>工具相关
 [使用 Sublime + PlantUML 高效地画图](http://blog.csdn.net/linuxcjh/article/details/51105294)
